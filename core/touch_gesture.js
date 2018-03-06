@@ -133,6 +133,7 @@ Blockly.TouchGesture.prototype.bindMouseEvents = function(e) {
     document, 'mouseup', null, this.handleUp.bind(this), /*opt_noCaptureIdentifier*/ true);
 
   e.preventDefault();
+  e.stopPropagation();
 };
 
 /**
@@ -141,7 +142,7 @@ Blockly.TouchGesture.prototype.bindMouseEvents = function(e) {
  * @package
  */
 Blockly.TouchGesture.prototype.handleStart = function(e) {
-  if (!this.isDragging) {
+  if (this.isDragging()) {
     // A drag has already started, so this can no longer be a pinch-zoom.
     return;
   }
@@ -236,8 +237,8 @@ Blockly.TouchGesture.prototype.handleTouchStart = function(e) {
     var point1 = this.cachedPoints_[pointers[1]];
     this.startDistance_ = goog.math.Coordinate.distance(point0, point1);
     this.isMultiTouch_ = true;
+    e.preventDefault();
   }
-  e.preventDefault();
 };
 
 /**
@@ -270,8 +271,8 @@ Blockly.TouchGesture.prototype.handleTouchMove = function(e) {
       workspace.zoom(position.x, position.y, delta);
     }
     this.previousScale_ = scale;
+    e.preventDefault();
   }
-  e.preventDefault();
 };
 
 /**
